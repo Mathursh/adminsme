@@ -1,7 +1,7 @@
 <div class="grid">
 	<div class="col-12">
 		<div class="card">
-			<h5>Filter Menu</h5>
+			<h5>New Orders</h5>
 			<p-table #dt1 [value]="customers1" dataKey="id" [rows]="10" [loading]="loading" [rowHover]="true" styleClass="p-datatable-gridlines" [paginator]="true" [globalFilterFields]="['name','country.name','representative.name','status']" responsiveLayout="scroll">
 				<ng-template pTemplate="caption">
 					<div class="flex justify-content-between flex-column sm:flex-row">
@@ -17,18 +17,6 @@
 						<th>
 							<div class="flex justify-content-between align-items-center">
 								Name
-								<p-columnFilter type="text" field="name" display="menu" placeholder="Search by name"></p-columnFilter>
-							</div>
-						</th>
-						<th>
-							<div class="flex justify-content-between align-items-center">
-								Country
-								<p-columnFilter type="text" field="country.name" display="menu" placeholder="Search by country"></p-columnFilter>
-							</div>
-						</th>
-						<th>
-							<div class="flex justify-content-between align-items-center">
-								Agent
 								<p-columnFilter field="representative" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
 									<ng-template pTemplate="header">
 										<div class="px-3 pt-3 pb-0">
@@ -50,6 +38,18 @@
 						</th>
 						<th>
 							<div class="flex justify-content-between align-items-center">
+								Address
+								<p-columnFilter type="text" field="country.name" display="menu" placeholder="Search by country"></p-columnFilter>
+							</div>
+						</th>
+						<th>
+							<div class="flex justify-content-between align-items-center">
+								Tel Number
+								<p-columnFilter type="text" field="name" display="menu" placeholder="Search by name"></p-columnFilter>
+							</div>
+						</th>
+						<th>
+							<div class="flex justify-content-between align-items-center">
 								Date
 								<p-columnFilter type="date" field="date" display="menu" placeholder="mm/dd/yyyy"></p-columnFilter>
 							</div>
@@ -62,7 +62,7 @@
 						</th>
 						<th>
 							<div class="flex justify-content-between align-items-center">
-								Status
+								Order Status
 								<p-columnFilter field="status" matchMode="equals" display="menu">
 									<ng-template pTemplate="filter" let-value let-filter="filterCallback">
 										<p-dropdown [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Any" [style]="{'min-width': '12rem'}" >
@@ -76,7 +76,7 @@
 						</th>
 						<th>
 							<div class="flex justify-content-between align-items-center">
-								Activity
+								Ordered Items
 								<p-columnFilter field="activity" matchMode="between" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
 									<ng-template pTemplate="filter" let-filter="filterCallback">
 										<p-slider [ngModel]="activityValues" [range]="true" (onSlideEnd)="filter($event.values)" styleClass="m-3" [style]="{'min-width': '12rem'}" ></p-slider>
@@ -90,7 +90,7 @@
 						</th>
 						<th style="width: 8rem">
 							<div class="flex justify-content-between align-items-center">
-								Verified
+								Payment Status
 								<p-columnFilter type="boolean" field="verified" display="menu"></p-columnFilter>
 							</div>
 						</th>
@@ -98,16 +98,16 @@
 				</ng-template>
 				<ng-template pTemplate="body" let-customer>
 					<tr>
+						<td style="min-width: 14rem;">
+							<img [alt]="customer.representative.name" src="assets/demo/images/avatar/{{customer.representative.image}}" width="32" style="vertical-align: middle"/>
+							<span class="image-text ml-2">{{customer.representative.name}}</span>
+						</td>
 						<td style="min-width: 12rem;">
 							{{customer.name}}
 						</td>
 						<td style="min-width: 12rem;">
 							<img src="assets/demo/images/flag/flag_placeholder.png" [class]="'flag flag-' + customer.country.code" width="30">
 							<span class="image-text ml-2">{{customer.country.name}}</span>
-						</td>
-						<td style="min-width: 14rem;">
-							<img [alt]="customer.representative.name" src="assets/demo/images/avatar/{{customer.representative.image}}" width="32" style="vertical-align: middle"/>
-							<span class="image-text ml-2">{{customer.representative.name}}</span>
 						</td>
 						<td style="min-width: 10rem;">
 							{{customer.date | date: 'MM/dd/yyyy'}}
@@ -118,9 +118,8 @@
 						<td style="min-width: 12rem;">
 							<span [class]="'customer-badge status-' + customer.status">{{customer.status}}</span>
 						</td>
-						<td style="min-width: 12rem; ">
-							<p-progressBar [value]="customer.activity" [showValue]="false"></p-progressBar>
-						</td>
+						<td style="min-width: 12rem;" class ="card p-fluid">
+							<button pbutton="" icon="pi pi-external-link" label="Show" class="p-element p-button p-component" style="width: auto;" ng-reflect-icon="pi pi-external-link" ng-reflect-label="Show"><span class="p-button-icon p-button-icon-left pi pi-external-link" aria-hidden="true"></span><span class="p-button-label">Show</span></button>						</td>
 						<td class="text-center" style="min-width: 8rem;">
 							<i class="pi" [ngClass]="{'true-icon pi-check-circle text-green-500': customer.verified, 'false-icon pi-times-circle text-pink-500 ': !customer.verified}"></i>
 						</td>
